@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/APIthet_icon.png</file>
+        <file>icons/APIthet.ico</file>
+        <file>icons/APIthet_banner.png</file>
+    </qresource>
+</RCC>
