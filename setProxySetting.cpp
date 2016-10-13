@@ -41,6 +41,8 @@ void MainWindow::setApplicationProxy()
         proxy.setPort(ui->spinBoxPort->value());
         //proxy.setPort(ui->lineEditProxyPort->text().toUShort());
 
+        //only read proxy parameters if proxy button is set
+        //and proxy line edit for IP/name has some length
         if (ui->checkBoxAuth->isEnabled() &&
                 ui->lineEditUsername->text().length() &&
                 ui->lineEditPassword->text().length())
@@ -52,7 +54,7 @@ void MainWindow::setApplicationProxy()
         QNetworkProxy::setApplicationProxy(proxy);
     }
     else {
-        QNetworkProxy::setApplicationProxy(QNetworkProxy::HttpProxy);
-        //ui->checkBoxAuth->setEnabled(false);
+        //use the system proxy
+        QNetworkProxyFactory::setUseSystemConfiguration(true);
     }
 }

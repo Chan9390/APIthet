@@ -83,7 +83,7 @@ void MainWindow::sendGEThttp()
     httpRequest.setUrl(targetURL);
     manager->get(httpRequest);
 
-    ui->pushButtonAdd->setEnabled(false);
+    //ui->pushButtonAdd->setEnabled(false);
 }
 
 void MainWindow::sendPOSThttp()
@@ -194,7 +194,7 @@ void MainWindow::sendPOSThttp()
         jsonParamsMap.clear();
         jsonList.clear();
     }
-    ui->pushButtonAdd->setEnabled(false);
+    //ui->pushButtonAdd->setEnabled(false);
 }
 
 void MainWindow::sendPUThttp()
@@ -214,5 +214,5 @@ void MainWindow::sendPUThttp()
 
     //Invoke post method
     manager->put(httpRequest, ui->plainTextEditPayload->toPlainText().toUtf8());
-    ui->pushButtonAdd->setEnabled(false);
+    //ui->pushButtonAdd->setEnabled(false);
 }

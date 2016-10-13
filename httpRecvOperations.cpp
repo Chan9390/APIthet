@@ -51,6 +51,5 @@ void MainWindow::replyFinished (QNetworkReply *reply)
     //ui->textBrowser->append(reply->bytesAvailable());
     reply->deleteLater();
 
-    ui->pushButtonAdd->setEnabled(true);
     showHeaderResult();
 }
