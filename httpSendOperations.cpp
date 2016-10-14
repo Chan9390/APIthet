@@ -62,10 +62,7 @@ void MainWindow::sendGEThttp()
 
             //Invoke get method
             manager->get(httpRequest);
-
-            ui->textBrowser->append(maliciousParams);
-            ui->textBrowser->append(queryParams);
-            ui->textBrowser->append(malUrlString);
+            eventLoop.exec();
         }
         //clear the map of its records
         urlParamMap.clear();
@@ -82,7 +79,7 @@ void MainWindow::sendGEThttp()
     prepareCsrfRequest(&httpRequest);
     httpRequest.setUrl(targetURL);
     manager->get(httpRequest);
-
+    eventLoop.exec();
     //ui->pushButtonAdd->setEnabled(false);
 }
 
@@ -174,6 +171,7 @@ void MainWindow::sendPOSThttp()
             }
 
             manager->post(httpRequest, localPayload.toUtf8());
+            eventLoop.exec();
             //decrement the count by one
             --jsonParamRepeat;
             //The final count should be 0
@@ -184,7 +182,7 @@ void MainWindow::sendPOSThttp()
     //try csrf payload
     prepareCsrfRequest(&httpRequest);
     manager->post(httpRequest, ui->plainTextEditPayload->toPlainText().toUtf8());
-
+    eventLoop.exec();
     //Invoke post method
     if (!validJsonPayload)
         manager->post(httpRequest, ui->plainTextEditPayload->toPlainText().toUtf8());
@@ -203,8 +201,8 @@ void MainWindow::sendPUThttp()
     QUrl targetURL = QUrl(ui->lineEditURL->text());
     QString strQuery = targetURL.query(QUrl::PrettyDecoded);
 
-    if (strQuery.length())
-        ui->textBrowser->append(strQuery);
+    //if (strQuery.length())
+    //    ui->textBrowser->append(strQuery);
 
     //Set URL
     httpRequest.setUrl(targetURL);

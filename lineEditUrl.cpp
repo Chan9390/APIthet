@@ -17,13 +17,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-//Slot to connect event after "Add Button"
+//Slot to connect event after "Run Button"
 void MainWindow::lineURLSlot()
 {
     QString userText = ui->lineEditURL->text();
-
+    QErrorMessage errorMessage;
 
     //check if the url is valid
     if (!((QUrl(userText)).isValid()))
-        QMessageBox::critical(this, "URL not valid", userText);
+        errorMessage.showMessage(tr("URL format looks invalid"));
 }

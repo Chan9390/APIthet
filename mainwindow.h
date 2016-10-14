@@ -18,7 +18,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QMessageBox>
+#include <QErrorMessage>
 #include <QSplashScreen>
 
 #include <QNetworkAccessManager>
@@ -27,6 +27,7 @@
 #include <QNetworkProxy>
 
 #include <QThread>
+#include <QEventLoop>
 
 #include <QLinkedList>
 #include <QList>
@@ -232,7 +233,6 @@ private:
     void setDefault();
 
     QNetworkAccessManager *manager;
-    httpHeaders *header;
 
     QList<QPair<QString, QString> > urlParamMap;
     QList<QPair<QString, QString> >::iterator mapEntry;
@@ -247,6 +247,10 @@ private:
 
     httpMethods methods;
     randPayloadTypes randParamType;
+
+    QEventLoop eventLoop;
+
+    httpHeaders *header;
 
     //flag to specify a payload crafted CSRF
     bool csrfPayload;

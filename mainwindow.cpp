@@ -63,7 +63,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->checkBoxProxy, SIGNAL(stateChanged(int)), this, SLOT(enableProxySlot(int)));
     connect(ui->checkBoxAuth, SIGNAL(stateChanged(int)), this, SLOT(enableAuthSlot(int)));
     connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+    connect(manager, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
 
+    //eventLoop.exec();
 }
 
 MainWindow::~MainWindow()

@@ -44,7 +44,7 @@ void MainWindow::checkSecHeaders(QNetworkReply *reply)
 
 void MainWindow::showHeaderResult()
 {
-    ui->textBrowserResults->clear();
+    //ui->textBrowserResults->clear();
 
     if (contentHeaderMissed)
         ui->textBrowserResults->append

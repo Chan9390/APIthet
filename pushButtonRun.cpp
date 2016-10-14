@@ -19,13 +19,16 @@
 
 void MainWindow::pushButtonRunSlot()
 {
+    ui->pushButtonRun->setDisabled(true);
     //process HTTP request
+
+    setDefault();
+
     processHttpReq();
 
     //Clear the results of previous API
-    ui->textBrowserResults->clear();
+    //ui->textBrowserResults->clear();
 
-    setDefault();
     //Disable the payload input box
     //ui->plainTextEditPayload->setEnabled(false);
 

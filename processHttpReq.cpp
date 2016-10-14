@@ -35,4 +35,7 @@ void MainWindow::processHttpReq()
         ui->textBrowser->append("----unhandled----");
         break;
     }
+    //show the test result
+    showHeaderResult();
+    ui->pushButtonRun->setEnabled(true);
 }

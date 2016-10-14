@@ -49,12 +49,14 @@ void MainWindow::analyzeJsonList()
         QVariant jsonNode = jsonList.at(iter);
 
         //check if Node can be coverted into a string or int
-        if (!jsonNode.canConvert<QMap<QString, QVariant> >()
-                && !jsonNode.canConvert<QList<QVariant> >()) {
+        /*
+         if (!jsonNode.canConvert<QMap<QString, QVariant> >()
+               && !jsonNode.canConvert<QList<QVariant> >()) {
             ui->textBrowser->append(".................");
             //ui->textBrowser->append(jsonMapEntry.key());
             ui->textBrowser->append(jsonNode.toString());
         }
+        */
         analyzeJsonNode(&jsonNode);
     }
 }
@@ -66,6 +68,7 @@ void MainWindow::analyzeJsonList(QList<QVariant> *localList)
     {
         QVariant jsonNode = localList->at(iter);
         //check if Node can be coverted into a string or int
+        /*
         if (!jsonNode.canConvert<QMap<QString, QVariant> >()
                 && !jsonNode.canConvert<QList<QVariant> >()) {
             ui->textBrowser->append(".................");
@@ -73,6 +76,7 @@ void MainWindow::analyzeJsonList(QList<QVariant> *localList)
             ui->textBrowser->append(jsonNode.toString());
         }
         else
+        */
             analyzeJsonNode(&jsonNode);
     }
 }
@@ -85,7 +89,7 @@ void MainWindow::analyzeJsonMap()
         QVariant jsonNode = *jsonMapEntry;
         if (!jsonNode.canConvert<QMap<QString, QVariant> >()
                 && !jsonNode.canConvert<QList<QVariant> >()) {
-            ui->textBrowser->append(".................");
+            //ui->textBrowser->append(".................");
             populateJsonParamMap(jsonMapEntry.key(), jsonMapEntry.value().toString());
             //ui->textBrowser->append(jsonMapEntry.key());
             //ui->textBrowser->append(jsonMapEntry.value().toString());

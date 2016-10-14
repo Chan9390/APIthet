@@ -22,7 +22,7 @@ void MainWindow::replyFinished (QNetworkReply *reply)
 {
     if(reply->error())
     {
-        ui->textBrowser->append(reply->errorString());
+        ui->textBrowser->append("An error occured while performing the operation");
     }
 
     else {
@@ -51,5 +51,6 @@ void MainWindow::replyFinished (QNetworkReply *reply)
     //ui->textBrowser->append(reply->bytesAvailable());
     reply->deleteLater();
 
-    showHeaderResult();
+    //showHeaderResult();
+    eventLoop.quit();
 }
