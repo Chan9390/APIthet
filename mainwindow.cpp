@@ -49,7 +49,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     setEncoding();
     setRandTypes();
 
-    connect(ui->pushButtonRun, SIGNAL(clicked()), this, SLOT(lineURLSlot()));
     connect(ui->comboBoxHTTPMethods, SIGNAL(activated(QString)), this, SLOT(comboBoxHTTPSlot(QString)));
     connect(ui->pushButtonClear, SIGNAL(clicked()), this, SLOT(pushButtonClearSlot()));
     connect(ui->pushButtonAddHeader, SIGNAL(clicked()), this, SLOT(textBrowserHeaderSlot()));

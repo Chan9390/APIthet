@@ -22,7 +22,8 @@ void MainWindow::replyFinished (QNetworkReply *reply)
 {
     if(reply->error())
     {
-        ui->textBrowser->append("An error occured while performing the operation");
+        ui->textBrowser->append("An error occured while performing the operation...");
+        ui->textBrowser->append(reply->errorString());
     }
 
     else {

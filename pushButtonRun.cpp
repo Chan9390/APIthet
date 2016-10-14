@@ -22,33 +22,42 @@ void MainWindow::pushButtonRunSlot()
     ui->pushButtonRun->setDisabled(true);
     //process HTTP request
 
-    setDefault();
+    if (lineUrlValid()) {
 
-    processHttpReq();
+        setDefault();
 
-    //Clear the results of previous API
-    //ui->textBrowserResults->clear();
+        processHttpReq();
 
-    //Disable the payload input box
-    //ui->plainTextEditPayload->setEnabled(false);
+        //Clear the results of previous API
+        //ui->textBrowserResults->clear();
 
-    ui->textBrowser->append(ui->comboBoxHTTPMethods->currentText());
-    ui->textBrowser->insertPlainText(" ");
+        //Disable the payload input box
+        //ui->plainTextEditPayload->setEnabled(false);
 
-    ui->textBrowser->insertPlainText(ui->lineEditURL->text());
+        ui->textBrowser->append(ui->comboBoxHTTPMethods->currentText());
+        ui->textBrowser->insertPlainText(" ");
 
-    //Bad hardcode, define it as a string
-    //ui->textBrowser->append("_________________________________________");
-    if (ui->lineEditHeader->text().length()) {
-        ui->textBrowser->append("");
-        ui->textBrowser->append(ui->lineEditHeader->text());
-        ui->textBrowser->insertPlainText(":");
-        ui->textBrowser->insertPlainText(ui->lineEditHeaderVal->text());
+        ui->textBrowser->insertPlainText(ui->lineEditURL->text());
+
+        //Bad hardcode, define it as a string
+        //ui->textBrowser->append("_________________________________________");
+        if (ui->lineEditHeader->text().length()) {
+            ui->textBrowser->append("");
+            ui->textBrowser->append(ui->lineEditHeader->text());
+            ui->textBrowser->insertPlainText(":");
+            ui->textBrowser->insertPlainText(ui->lineEditHeaderVal->text());
+        }
+        if (ui->plainTextEditPayload->toPlainText().length())
+        {
+            ui->textBrowser->append("");
+            ui->textBrowser->append(ui->plainTextEditPayload->toPlainText());
+        }
+        //show the activities of header list
     }
-    if (ui->plainTextEditPayload->toPlainText().length())
-    {
-        ui->textBrowser->append("");
-        ui->textBrowser->append(ui->plainTextEditPayload->toPlainText());
+    else {
+        QMessageBox messageBox;
+        messageBox.critical(0, "Error", "URL does not look valid");
+        messageBox.setFixedSize(250, 100);
+        ui->pushButtonRun->setEnabled(true);
     }
-    //show the activities of header list
 }

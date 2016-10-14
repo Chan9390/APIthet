@@ -18,12 +18,10 @@
 #include "ui_mainwindow.h"
 
 //Slot to connect event after "Run Button"
-void MainWindow::lineURLSlot()
+bool MainWindow::lineUrlValid()
 {
-    QString userText = ui->lineEditURL->text();
-    QErrorMessage errorMessage;
-
     //check if the url is valid
-    if (!((QUrl(userText)).isValid()))
-        errorMessage.showMessage(tr("URL format looks invalid"));
+    if (!((QUrl(ui->lineEditURL->text())).isValid()))
+        return false;
+    return true;
 }

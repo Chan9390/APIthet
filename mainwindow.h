@@ -18,7 +18,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QErrorMessage>
+#include <QMessageBox>
 #include <QSplashScreen>
 
 #include <QNetworkAccessManager>
@@ -142,8 +142,6 @@ public:
     ~MainWindow();
 
 public slots:
-    //slot to handle url text
-    void lineURLSlot();
 
     //slot to handle cleaar button
     void pushButtonClearSlot();
@@ -188,6 +186,8 @@ private:
     Ui::MainWindow *ui;
 
     //Handle error conditions
+    //to check url text
+    bool lineUrlValid();
     void processHttpReq();
     void sendGEThttp();
     void sendPOSThttp();
