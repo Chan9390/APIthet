@@ -60,6 +60,11 @@ void MainWindow::sendGEThttp()
             //Set URL
             httpRequest.setUrl(malUrlString);
 
+            //identify the current parameter that has
+            //been injected with malicious parameter
+            currentParam.clear();
+            currentParam = keyValue.first;
+
             //Invoke get method
             manager->get(httpRequest);
             eventLoop.exec();
@@ -141,6 +146,11 @@ void MainWindow::sendPOSThttp()
         int newIndex = 0;
 
         insertInvertedCommas(&keyValue);
+
+        //identify the current parameter that has
+        //been injected with malicious parameter
+        currentParam.clear();
+        currentParam = keyValue;
 
         while (jsonParamRepeat >= 1)
         {

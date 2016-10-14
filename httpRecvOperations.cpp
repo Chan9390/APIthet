@@ -44,6 +44,15 @@ void MainWindow::replyFinished (QNetworkReply *reply)
             csrfPayload = false;
         }
 
+        if (currentParam.length()) {
+            ui->textBrowserResults->append
+                    (QString("<font color=red>Stored XSS likely for JSON param -- %1</font>").arg(currentParam));
+            ui->textBrowserResults->append
+                    ("<i>Malicious payload was injected, but application replied with HTTP status OK</i>");
+            ui->textBrowserResults->append("------------------------------------");
+        }
+
+        //check if an operation was performed without an Auth header
         if (!headerHasAuth && (hasQueryParams || postQueryHasBody))
             likelyUnauth = true;
     }

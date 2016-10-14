@@ -273,6 +273,8 @@ private:
     int xContentHeaderMissed;
     int hstsHeaderMissed;
     int xssProtHeaderMissed;
+
+    QString currentParam;
 };
 
 
