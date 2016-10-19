@@ -45,8 +45,6 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-#include <QRegExp>
-
 
 #define APPICON ":/icons/APIthet_icon.png"
 
@@ -55,6 +53,13 @@
 #define XCONTENT_HEADER "X-Content-Type-Options"
 #define HSTS_HEADER     "Strict-Transport-Security"
 #define XSS_HEADER      "X-XSS-Protection"
+#define CSRF_TOKEN_1    "X-Csrf-Token"
+#define CSRF_TOKEN_2    "X-CSRFToken"
+#define CSRF_TOKEN_3    "X-XSRF-TOKEN"
+
+#define ALLOW_ORIGIN    "Access-Control-Allow-Origin"
+#define ALLOW_CRED      "Access-Control-Allow-Credentials"
+#define ALLOW_METHOD    "Access-Control-Allow-Methods"
 
 #define maliciousPart1  "\"><ScRiPt SRC="
 #define maliciousPart2  "></ScRiPt>"
@@ -273,6 +278,7 @@ private:
     int xContentHeaderMissed;
     int hstsHeaderMissed;
     int xssProtHeaderMissed;
+    int csrfHeaderMissed;
 
     QString currentParam;
 };

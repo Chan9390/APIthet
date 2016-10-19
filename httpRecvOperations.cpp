@@ -50,6 +50,8 @@ void MainWindow::replyFinished (QNetworkReply *reply)
                     (QString("<font color=red>Stored XSS likely for JSON param -- %1</font>").arg(currentParam));
             ui->textBrowserResults->append
                     ("<i>Malicious payload was injected, but application replied with HTTP status OK</i>");
+            ui->textBrowserResults->append
+                    ("XSS (OWASP), CWE 79");
             ui->textBrowserResults->append("------------------------------------");
         }
 

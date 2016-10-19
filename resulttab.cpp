@@ -38,6 +38,9 @@ void MainWindow::checkSecHeaders(QNetworkReply *reply)
     if (!reply->hasRawHeader(XSS_HEADER))
         xssProtHeaderMissed++;
         //ui->textBrowserResults->append("XSS Protection header not set by the application");
+    if (!reply->hasRawHeader(CSRF_TOKEN_1) || !reply->hasRawHeader(CSRF_TOKEN_2)
+            || !reply->hasRawHeader(CSRF_TOKEN_3))
+        csrfHeaderMissed++;
 
     //showHeaderResult();
 }
@@ -68,11 +71,17 @@ void MainWindow::showHeaderResult()
                 (QString("<font color=orange>XSS Protection header not set by the application: %1 occurences</font>").
                  arg(xssProtHeaderMissed));
 
+    if (csrfHeaderMissed)
+        ui->textBrowserResults->append
+                (QString("<font color=orange>CSRF Token header not used by the application: %1 occurences</font>").
+                 arg(csrfHeaderMissed));
+
     ui->textBrowserResults->append("------------------------------------");
 
-    if (csrfIssueLikely) {
+    if (csrfIssueLikely && csrfHeaderMissed) {
         ui->textBrowserResults->append
                 ("<font color=orange>The application is likely vulnerable to CSRF issue</font>");
+        ui->textBrowserResults->append("CSRF (OWASP), CWE 352");
         ui->textBrowserResults->append("------------------------------------");
     }
 

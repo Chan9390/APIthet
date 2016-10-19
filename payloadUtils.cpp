@@ -83,8 +83,14 @@ void MainWindow::analyzePayload(QString replyPayload)
     QString malParam = keyLookupTable.value(lookupID);
 
     if (malParam.length()) {
-        ui->textBrowserResults->append("Reflected XSS detected for the param");
-        ui->textBrowserResults->append(malParam);
+        ui->textBrowserResults->append(("<font color=red> Reflected XSS detected for the param %1</font>").arg(malParam));
+        ui->textBrowserResults->append("XSS (OWASP), CWE 79, CVE-2014-3737");
+    }
+    else {
+        ui->textBrowserResults->append("<font color=red>Likely Blind XSS Scenario for unknown JSON parameter</font>");
+        ui->textBrowserResults->append("<i>A payload was injected in the past, but appeared in a recent reply</i>");
+        ui->textBrowserResults->append(malPayload);
+        ui->textBrowserResults->append("XSS (OWASP), CWE 79, CVE-2014-3737");
     }
 }
 
