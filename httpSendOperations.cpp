@@ -22,7 +22,7 @@ void MainWindow::sendGEThttp()
 {
     QNetworkRequest httpRequest;
     QString urlString = ui->lineEditURL->text();
-    QString randomString;
+    //QString randomString;
     QUrl targetURL = QUrl(urlString);
     QString strQuery = targetURL.query(QUrl::PrettyDecoded);
 
@@ -34,58 +34,24 @@ void MainWindow::sendGEThttp()
     if (strQuery.length() && !(strQuery.isEmpty())) {
         genKeyValueMap(&targetURL);
 
-        QPair<QString, QString> keyValue;
         hasQueryParams = true;
 
         //likely contains password
         if (strQuery.contains("pass") || strQuery.contains("password") ||
                 strQuery.contains("paswd") || strQuery.contains("passwd"))
             passwdInGetQuery = true;
-
-        for (mapEntry = urlParamMap.begin();
-            mapEntry != urlParamMap.end(); mapEntry++) {
-            QString malUrlString = urlString;
-            keyValue = *mapEntry;
-
-
-            //generate a malicious payload
-            genMaliciousStr(&randomString, keyValue.first);
-
-            //form valid and malicious keyvalue pairs
-            QString queryParams = QString("%1=%2").arg(keyValue.first, keyValue.second);
-            QString maliciousParams = QString("%1=%2").arg(keyValue.first, randomString);
-
-            malUrlString.replace(queryParams, maliciousParams);
-
-            //Set URL
-            httpRequest.setUrl(malUrlString);
-
-            //identify the current parameter that has
-            //been injected with malicious parameter
-            currentParam.clear();
-            currentParam = keyValue.first;
-
-            //Invoke get method
-            manager->get(httpRequest);
-            eventLoop.exec();
-        }
-        //clear the map of its records
-        urlParamMap.clear();
+        performUrlXSS(&httpRequest);
     }
 
     else {
         //Set URL
         httpRequest.setUrl(targetURL);
-
         //Invoke get method
         manager->get(httpRequest);
+        eventLoop.exec();
     }
     //CSRF Request
-    prepareCsrfRequest(&httpRequest);
-    httpRequest.setUrl(targetURL);
-    manager->get(httpRequest);
-    eventLoop.exec();
-    //ui->pushButtonAdd->setEnabled(false);
+    performGetCSRF(&httpRequest);
 }
 
 void MainWindow::sendPOSThttp()
@@ -97,8 +63,6 @@ void MainWindow::sendPOSThttp()
     QUrl targetURL = QUrl(ui->lineEditURL->text());
     QString postPayload = ui->plainTextEditPayload->toPlainText();
     QByteArray reqPayloadBinary = postPayload.toUtf8();
-    QString modPayload = postPayload.simplified();
-            //QJsonDocument::fromJson(reqPayloadBinary).toJson(QJsonDocument::Compact);
 
 
     QMap<QString, quint16>::iterator jsonParamsEntry;
@@ -106,13 +70,7 @@ void MainWindow::sendPOSThttp()
     //form a json map from the payload
     bool validJsonPayload = genJSONpayload(reqPayloadBinary);
 
-    //check if there is a random JSON payload
-    bool hasRandomJsonParam = false;
-
     setApplicationProxy();
-
-    if (ui->lineEditRandParam->isEnabled() && ui->comboBoxRandParam->currentIndex())
-        hasRandomJsonParam = true;
 
     //initialize the iterator to beginning of the map element
     jsonParamsEntry = jsonParamsMap.begin();
@@ -131,78 +89,15 @@ void MainWindow::sendPOSThttp()
         strQuery.contains("paswd") || strQuery.contains("passwd"))
             passwdInPostQuery = true;
 
-    //Algorithm:
-    //Get a copy of the original payload
-    //Get a copy of the Key Value pair from Json Payload Map
-    //Modify the key value pair to contain malicious param
-    //replace the original key value with malicious one in the payload
-    //send the payload through post
-    for (int iterCount = 0; iterCount < jsonParamsMap.count(),
-         jsonParamsEntry != jsonParamsMap.end(); iterCount++, jsonParamsEntry++) {
+    if (validJsonPayload)
+        performJsonXSS(&httpRequest);
 
-        QString keyValue = jsonParamsEntry.key();
-        quint16 jsonParamRepeat = jsonParamsEntry.value();
-        int indexOfKeyValue = 0;
-        int newIndex = 0;
 
-        insertInvertedCommas(&keyValue);
+    performPostCSRF(&httpRequest);
 
-        //identify the current parameter that has
-        //been injected with malicious parameter
-        currentParam.clear();
-        currentParam = keyValue;
-
-        while (jsonParamRepeat >= 1)
-        {
-            QString maliciousJsonParam;
-            QString localPayload = modPayload;
-
-            //inner loop
-            //Modify the key value pair to contain malicious param
-            genJSonMaliciousParam(&maliciousJsonParam, keyValue);
-
-            indexOfKeyValue = modPayload.indexOf(keyValue, newIndex,
-                                                 Qt::CaseInsensitive);
-
-            //the next search will be done from here
-            newIndex = indexOfKeyValue + keyValue.length();
-
-            //replace the real key value at the fresh index with malicious one
-            localPayload.replace(indexOfKeyValue, keyValue.length(), maliciousJsonParam);
-
-            //if (!localPayload.contains(maliciousPart1))
-            //    ui->textBrowser->append("A miss");
-
-            //insert unique random json param
-            if (hasRandomJsonParam) {
-                QString randParamString;
-                setRandString(&randParamString);
-                localPayload.replace(ui->lineEditRandParam->text(), randParamString);
-            }
-
-            manager->post(httpRequest, localPayload.toUtf8());
-            eventLoop.exec();
-            //decrement the count by one
-            --jsonParamRepeat;
-            //The final count should be 0
-            jsonParamsMap[keyValue] = jsonParamRepeat;
-        }
-    }
-
-    //try csrf payload
-    prepareCsrfRequest(&httpRequest);
-    manager->post(httpRequest, ui->plainTextEditPayload->toPlainText().toUtf8());
-    eventLoop.exec();
     //Invoke post method
     if (!validJsonPayload)
         manager->post(httpRequest, ui->plainTextEditPayload->toPlainText().toUtf8());
-    else {
-        //Clear the relevant data structures
-        jsonMap.clear();
-        jsonParamsMap.clear();
-        jsonList.clear();
-    }
-    //ui->pushButtonAdd->setEnabled(false);
 }
 
 void MainWindow::sendPUThttp()

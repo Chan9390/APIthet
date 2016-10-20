@@ -19,9 +19,9 @@
 
 void MainWindow::setDefault()
 {
-    csrfPayload = false;
+    //csrfPayload = false;
     csrfIssueLikely = false;
-    headerHasAuth = false;
+    //headerHasAuth = false;
     hasQueryParams = false;
     likelyUnauth = false;
     passwdInGetQuery = false;
@@ -34,5 +34,5 @@ void MainWindow::setDefault()
     xContentHeaderMissed = 0;
     hstsHeaderMissed = 0;
     xssProtHeaderMissed = 0;
-
+    csrfHeaderMissed = 0;
 }

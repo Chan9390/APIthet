@@ -76,7 +76,7 @@ class MainWindow;
 }
 
 enum httpMethods {
-    GET=0,
+    GET = 0,
     POST,
     PUT,
     HEAD,
@@ -84,6 +84,19 @@ enum httpMethods {
     TRACE,
     CONNECT,
     OPTIONS,
+};
+
+enum attackTypes {
+    NO_ATTACK = 0,
+    XSS,
+    SQL_INJ,
+    CSRF,
+    HTML_INJ,
+    OPEN_REDIRECT,
+    HTTP_SPLITTING,
+    CRLF,
+    CORS,
+    HEADER_FUZZ,
 };
 
 enum randPayloadTypes {
@@ -235,6 +248,20 @@ private:
     void prepareCsrfRequest(QNetworkRequest *httpRequest);
     void showHeaderResult();
 
+    //attack functions
+    void performUrlXSS(QNetworkRequest *httpRequest);
+
+    void performJsonXSS(QNetworkRequest *httpRequest);
+
+    void performGetCSRF(QNetworkRequest *httpRequest);
+
+    void performPostCSRF(QNetworkRequest *httpRequest);
+
+    //process reply after attack
+    void processCsrfReply(QNetworkReply *reply);
+
+    void processXssReply(QNetworkReply *reply);
+
     void setDefault();
 
     QNetworkAccessManager *manager;
@@ -252,13 +279,14 @@ private:
 
     httpMethods methods;
     randPayloadTypes randParamType;
+    attackTypes attackType;
 
     QEventLoop eventLoop;
 
     httpHeaders *header;
 
     //flag to specify a payload crafted CSRF
-    bool csrfPayload;
+    //bool csrfPayload;
     bool csrfIssueLikely;
     //there was and authentication header in the request
     bool headerHasAuth;

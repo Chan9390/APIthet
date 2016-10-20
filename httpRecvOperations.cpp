@@ -20,6 +20,52 @@
 //Handle Replies
 void MainWindow::replyFinished (QNetworkReply *reply)
 {
+    ui->textBrowser->clear();
+    ui->textBrowser->append(reply->readAll().constData());
+    checkSecHeaders(reply);
+
+    switch(attackType) {
+    case XSS:
+        processXssReply(reply);
+        break;
+    case CSRF:
+        processCsrfReply(reply);
+        break;
+    case SQL_INJ:
+    case HTML_INJ:
+    case OPEN_REDIRECT:
+    case HTTP_SPLITTING:
+    case CRLF:
+    case CORS:
+    case HEADER_FUZZ:
+    default:
+        break;
+    }
+
+    //check if an operation was performed without an Auth header
+    if (!reply->error() && !headerHasAuth && (hasQueryParams || postQueryHasBody))
+            likelyUnauth = true;
+
+    reply->deleteLater();
+
+    //end of the event loop
+    eventLoop.quit();
+}
+
+void MainWindow::processCsrfReply(QNetworkReply *reply)
+{
+    if(reply->error())
+    {
+        ui->textBrowser->append("An error occured while performing the operation...");
+        ui->textBrowser->append(reply->errorString());
+    }
+
+    else
+        csrfIssueLikely = true;
+}
+
+void MainWindow::processXssReply(QNetworkReply *reply)
+{
     if(reply->error())
     {
         ui->textBrowser->append("An error occured while performing the operation...");
@@ -34,18 +80,7 @@ void MainWindow::replyFinished (QNetworkReply *reply)
         if (replyStr.contains(maliciousPart1) && replyStr.contains(maliciousPart2))
             analyzePayload(replyStr);
 
-        ui->textBrowser->clear();
-        ui->textBrowser->append(hostResponse.constData());
-
-        checkSecHeaders(reply);
-
-        //check if csrf payload was sent
-        if (csrfPayload) {
-            csrfIssueLikely = true;
-            csrfPayload = false;
-        }
-
-        if (currentParam.length()) {
+        else if (currentParam.length()) {
             ui->textBrowserResults->append
                     (QString("<font color=red>Stored XSS likely for JSON param -- %1</font>").arg(currentParam));
             ui->textBrowserResults->append
@@ -54,15 +89,5 @@ void MainWindow::replyFinished (QNetworkReply *reply)
                     ("XSS (OWASP), CWE 79");
             ui->textBrowserResults->append("------------------------------------");
         }
-
-        //check if an operation was performed without an Auth header
-        if (!headerHasAuth && (hasQueryParams || postQueryHasBody))
-            likelyUnauth = true;
     }
-
-    //ui->textBrowser->append(reply->bytesAvailable());
-    reply->deleteLater();
-
-    //showHeaderResult();
-    eventLoop.quit();
 }

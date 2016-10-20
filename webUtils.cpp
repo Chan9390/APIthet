@@ -35,5 +35,4 @@ void MainWindow::prepareCsrfRequest(QNetworkRequest *httpRequest)
     //Set header for arbitrary origin
     httpRequest->setRawHeader(QString("Origin").toUtf8(),
                             QString("*").toUtf8());
-    csrfPayload = true;
 }

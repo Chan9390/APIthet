@@ -19,6 +19,7 @@
 
 void MainWindow::textBrowserHeaderSlot()
 {
+    headerHasAuth = false;
     ui->textBrowser->clear();
     if (ui->lineEditHeader->text().length()) {
         header->incrementHeaders();
@@ -66,7 +67,7 @@ void MainWindow::textBrowserEncodeSlot()
     cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
     cursor.endEditBlock();
 
-    cursor.insertText("Hello World");
+    //cursor.insertText("Hello World");
 
     //ui->textBrowser->append("<font color=orange>select text to encode...</font>");
 }

@@ -45,7 +45,9 @@ SOURCES += main.cpp\
     randParamText.cpp \
     setDefaults.cpp \
     pushButtonClear.cpp \
-    resultTab.cpp
+    resultTab.cpp \
+    postAttacks.cpp \
+    getAttacks.cpp
 
 HEADERS  += mainwindow.h
 
