@@ -32,7 +32,9 @@ void MainWindow::replyFinished (QNetworkReply *reply)
         break;
     case SQL_INJ:
     case HTML_INJ:
+        processHtmlInjectionReply(reply);
     case OPEN_REDIRECT:
+        processOpenRedirectReply(reply);
     case HTTP_SPLITTING:
     case CRLF:
     case CORS:

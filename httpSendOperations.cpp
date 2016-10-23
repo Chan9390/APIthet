@@ -47,6 +47,9 @@ void MainWindow::sendGEThttp()
         //perform XSS attack
         performUrlXSS(&httpRequest);
 
+        //perform open redirect attack
+        performOpenRedirect(&httpRequest);
+
         //Clear the query param map
         urlParamMap.clear();
     }
