@@ -22,7 +22,6 @@ void MainWindow::replyFinished (QNetworkReply *reply)
 {
     ui->textBrowser->clear();
     ui->textBrowser->append(reply->readAll().constData());
-    checkSecHeaders(reply);
 
     switch(attackType) {
     case XSS:
@@ -43,8 +42,12 @@ void MainWindow::replyFinished (QNetworkReply *reply)
     }
 
     //check if an operation was performed without an Auth header
-    if (!reply->error() && !headerHasAuth && (hasQueryParams || postQueryHasBody))
+    if (!reply->error()) {
+        if (headerHasAuth && (hasQueryParams || postQueryHasBody))
             likelyUnauth = true;
+
+        checkSecHeaders(reply);
+    }
 
     reply->deleteLater();
 
@@ -88,6 +91,45 @@ void MainWindow::processXssReply(QNetworkReply *reply)
             ui->textBrowserResults->append
                     ("XSS (OWASP), CWE 79");
             ui->textBrowserResults->append("------------------------------------");
+        }
+    }
+}
+
+void MainWindow::processHtmlInjectionReply(QNetworkReply *reply)
+{
+    if(reply->error())
+    {
+        ui->textBrowser->append("An error occured while performing the operation...");
+        ui->textBrowser->append(reply->errorString());
+    }
+
+    else {
+        QByteArray hostResponse = reply->readAll();
+        QString replyStr = QString(hostResponse);
+
+        if (replyStr.contains(htmlInjContent)) {
+            ui->textBrowserResults->append
+                    (QString("<font color=red>HTML injection found for param %1 </font>").arg(currentParam));
+        }
+    }
+}
+
+void MainWindow::processOpenRedirectReply(QNetworkReply *reply)
+{
+    if(reply->error())
+    {
+        ui->textBrowser->append("An error occured while performing the operation...");
+        ui->textBrowser->append(reply->errorString());
+    }
+    else {
+        QByteArray hostResponse = reply->readAll();
+        QString replyStr = QString(hostResponse);
+        QString desiredReply =
+                "This domain is established to be used for illustrative examples in documents";
+
+        if (replyStr.contains(desiredReply)) {
+            ui->textBrowserResults->append
+                    ("<font color=red>Open Redirect vulnerability found</font>");
         }
     }
 }

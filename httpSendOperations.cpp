@@ -36,11 +36,19 @@ void MainWindow::sendGEThttp()
 
         hasQueryParams = true;
 
-        //likely contains password
+        //Check if the query likely contains password
         if (strQuery.contains("pass") || strQuery.contains("password") ||
                 strQuery.contains("paswd") || strQuery.contains("passwd"))
             passwdInGetQuery = true;
+
+        //perform HTML injection attack
+        performHtmlInjection(&httpRequest);
+
+        //perform XSS attack
         performUrlXSS(&httpRequest);
+
+        //Clear the query param map
+        urlParamMap.clear();
     }
 
     else {
