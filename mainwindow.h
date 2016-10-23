@@ -63,6 +63,10 @@
 
 #define maliciousPart1  "\"><ScRiPt SRC="
 #define maliciousPart2  "></ScRiPt>"
+#define htmlInjPayload  "<html>APIthet is testing your APIs</html>"
+#define htmlInjContent  "APIthet is testing your APIs"
+#define redirectQuery   "redirect=http://www.example.com"
+#define redirectDomain  "www.example.com"
 
 #define RANDOM_CHAR_LEN 5
 #define RANDOM_NAME_LEN 6
@@ -257,10 +261,18 @@ private:
 
     void performPostCSRF(QNetworkRequest *httpRequest);
 
+    void performHtmlInjection(QNetworkRequest *httpRequest);
+
+    void performOpenRedirect(QNetworkRequest *httpRequest);
+
     //process reply after attack
     void processCsrfReply(QNetworkReply *reply);
 
     void processXssReply(QNetworkReply *reply);
+
+    void processHtmlInjectionReply(QNetworkReply *reply);
+
+    void processOpenRedirectReply(QNetworkReply *reply);
 
     void setDefault();
 
