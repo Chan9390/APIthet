@@ -20,7 +20,6 @@
 void MainWindow::performHtmlInjection(QNetworkRequest *httpRequest)
 {
     QString urlString = ui->lineEditURL->text();
-    QString randomString;
     QPair<QString, QString> keyValue;
 
     attackType = HTML_INJ;
@@ -30,12 +29,9 @@ void MainWindow::performHtmlInjection(QNetworkRequest *httpRequest)
         QString malUrlString = urlString;
         keyValue = *mapEntry;
 
-        //generate a malicious payload
-        genMaliciousStr(&randomString, keyValue.first);
-
         //form valid and malicious keyvalue pairs
         QString queryParams = QString("%1=%2").arg(keyValue.first, keyValue.second);
-        QString maliciousParams = QString("%1=%2").arg(keyValue.first, randomString);
+        QString maliciousParams = QString("%1=%2").arg(keyValue.first, htmlInjPayload);
 
         malUrlString.replace(queryParams, maliciousParams);
 
@@ -74,6 +70,42 @@ void MainWindow::performUrlXSS(QNetworkRequest *httpRequest)
         //form valid and malicious keyvalue pairs
         QString queryParams = QString("%1=%2").arg(keyValue.first, keyValue.second);
         QString maliciousParams = QString("%1=%2").arg(keyValue.first, randomString);
+
+        malUrlString.replace(queryParams, maliciousParams);
+
+        //Set URL
+        httpRequest->setUrl(malUrlString);
+
+        //identify the current parameter that has
+        //been injected with malicious parameter
+        currentParam.clear();
+        currentParam = keyValue.first;
+
+        //Invoke get method
+        manager->get(*httpRequest);
+        eventLoop.exec();
+    }
+
+    attackType = NO_ATTACK;
+}
+
+void MainWindow::performUrlSQLI(QNetworkRequest *httpRequest)
+{
+    QString urlString = ui->lineEditURL->text();
+    QPair<QString, QString> keyValue;
+
+    attackType = SQL_INJ;
+
+    for (mapEntry = urlParamMap.begin();
+        mapEntry != urlParamMap.end(); mapEntry++) {
+        QString malUrlString = urlString;
+        keyValue = *mapEntry;
+
+        //form valid and malicious keyvalue pairs
+        QString queryParams = QString("%1=%2").arg(keyValue.first, keyValue.second);
+        QString maliciousParams = queryParams;
+
+        maliciousParams.append(sqlUrlInjecionPayload);
 
         malUrlString.replace(queryParams, maliciousParams);
 

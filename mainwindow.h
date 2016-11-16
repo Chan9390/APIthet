@@ -66,6 +66,8 @@
 #define htmlInjPayload  "<html>APIthet is testing your APIs</html>"
 #define htmlInjContent  "APIthet is testing your APIs"
 #define redirectQuery   "redirect=http://www.example.com"
+#define sqlUrlInjecionPayload  "35577585' or 9964=9964--"
+
 #define redirectDomain  "www.example.com"
 
 #define RANDOM_CHAR_LEN 5
@@ -238,7 +240,7 @@ private:
 
     void insertInvertedCommas(QString *keyVal);
     void genJSonMaliciousParam(QString *maliciousJsonParam, QString keyValue);
-    
+
     void genRandomPhone(QString *);
     void genRandomIP(QString *);
     void genRandomWebsite(QString *);
@@ -265,6 +267,8 @@ private:
 
     void performOpenRedirect(QNetworkRequest *httpRequest);
 
+    void performUrlSQLI(QNetworkRequest *httpRequest);
+
     //process reply after attack
     void processCsrfReply(QNetworkReply *reply);
 
@@ -273,6 +277,8 @@ private:
     void processHtmlInjectionReply(QNetworkReply *reply);
 
     void processOpenRedirectReply(QNetworkReply *reply);
+
+    void processSqliReply(QNetworkReply *reply);
 
     void setDefault();
 

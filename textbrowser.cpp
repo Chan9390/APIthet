@@ -37,6 +37,7 @@ void MainWindow::textBrowserHeaderSlot()
                 ((ui->lineEditHeader->text().contains("key")) ||
                 (ui->lineEditHeader->text().contains("auth")) ||
                 (ui->lineEditHeader->text().contains("token")) ||
+                (ui->lineEditHeader->text().contains("session")) ||
                 (ui->lineEditHeader->text().contains("authentication"))
                 ))
             headerHasAuth = true;

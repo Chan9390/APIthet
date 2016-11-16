@@ -31,6 +31,7 @@ void MainWindow::replyFinished (QNetworkReply *reply)
         processCsrfReply(reply);
         break;
     case SQL_INJ:
+        processSqliReply(reply);
     case HTML_INJ:
         processHtmlInjectionReply(reply);
     case OPEN_REDIRECT:
@@ -69,6 +70,21 @@ void MainWindow::processCsrfReply(QNetworkReply *reply)
         csrfIssueLikely = true;
 }
 
+void MainWindow::processSqliReply(QNetworkReply *reply)
+{
+    if(!reply->error())
+    {
+        ui->textBrowserResults->append(
+                QString("<font color=red>Blind SQLI likely for JSON param -- %1</font>").arg(currentParam));
+        ui->textBrowserResults->append
+                ("<i>Malicious payload was injected, but was treated as a valid parameter</i>");
+        ui->textBrowserResults->append
+                ("SQL Injection (OWASP type - Injection), CWE 89");
+        ui->textBrowserResults->append
+                ("-----------------------------------------------------------------------------");
+    }
+}
+
 void MainWindow::processXssReply(QNetworkReply *reply)
 {
     if(reply->error())
@@ -91,8 +107,9 @@ void MainWindow::processXssReply(QNetworkReply *reply)
             ui->textBrowserResults->append
                     ("<i>Malicious payload was injected, but application replied with HTTP status OK</i>");
             ui->textBrowserResults->append
-                    ("XSS (OWASP), CWE 79");
-            ui->textBrowserResults->append("------------------------------------");
+                    ("Cross Site Scripting (OWASP type - XSS), CWE 79");
+            ui->textBrowserResults->append
+                    ("-----------------------------------------------------------------------------");
         }
     }
 }

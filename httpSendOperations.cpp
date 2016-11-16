@@ -47,6 +47,9 @@ void MainWindow::sendGEThttp()
         //perform XSS attack
         performUrlXSS(&httpRequest);
 
+        //perform sqli on url parameters
+        performUrlSQLI(&httpRequest);
+
         //perform open redirect attack
         performOpenRedirect(&httpRequest);
 

@@ -76,25 +76,29 @@ void MainWindow::showHeaderResult()
                 (QString("<font color=orange>CSRF Token header not used by the application: %1 occurences</font>").
                  arg(csrfHeaderMissed));
 
-    ui->textBrowserResults->append("------------------------------------");
+    ui->textBrowserResults->append
+            ("-----------------------------------------------------------------------------");
 
     if (csrfIssueLikely && csrfHeaderMissed) {
         ui->textBrowserResults->append
                 ("<font color=orange>The application is likely vulnerable to CSRF issue</font>");
         ui->textBrowserResults->append("CSRF (OWASP), CWE 352");
-        ui->textBrowserResults->append("------------------------------------");
+        ui->textBrowserResults->append
+                ("-----------------------------------------------------------------------------");
     }
 
     if (passwdInGetQuery) {
         ui->textBrowserResults->append
                 ("<font color=red>The application likely sends password as a parameter for a GET query</font>");
-        ui->textBrowserResults->append("------------------------------------");
+        ui->textBrowserResults->append
+                ("-----------------------------------------------------------------------------");
     }
 
     if (likelyUnauth) {
         ui->textBrowserResults->append
                 ("<font color=red>The application has likely accessed a resource without authorization</font>");
-        ui->textBrowserResults->append("------------------------------------");
+        ui->textBrowserResults->append
+                ("-----------------------------------------------------------------------------");
     }
     //if (passwdInPostQuery)
 }
