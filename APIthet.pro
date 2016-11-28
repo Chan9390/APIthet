@@ -25,8 +25,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    textbrowser.cpp \
     pushButtonEncode.cpp \
     pushButtonHeader.cpp \
     pushButtonRun.cpp \
@@ -47,11 +45,15 @@ SOURCES += main.cpp\
     pushButtonClear.cpp \
     resultTab.cpp \
     postAttacks.cpp \
-    getAttacks.cpp
+    getAttacks.cpp \
+    apithet.cpp \
+    textBrowser.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += \
+    apithet.h
 
-FORMS    += mainwindow.ui
+FORMS    += \
+    APIthet.ui
 
 RESOURCES += \
     APIthetResource.qrc

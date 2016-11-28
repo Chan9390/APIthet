@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Slot to connect event after "Run Button"
-bool MainWindow::lineUrlValid()
+bool APIthet::lineUrlValid()
 {
     //check if the url is valid
     if (!((QUrl(ui->lineEditURL->text())).isValid()))

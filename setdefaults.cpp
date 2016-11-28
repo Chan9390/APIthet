@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
-void MainWindow::setDefault()
+void APIthet::setDefault()
 {
     //csrfPayload = false;
     csrfIssueLikely = false;

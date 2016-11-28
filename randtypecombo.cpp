@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Set the correct Encoding
-void MainWindow::setRandTypes()
+void APIthet::setRandTypes()
 {
     QComboBox *comboBoxRandParams = ui->comboBoxRandParam;
     QStringList randParamList;
@@ -30,7 +30,7 @@ void MainWindow::setRandTypes()
     comboBoxRandParams->addItems(randParamList);
 }
 
-void MainWindow::comboBoxRandParamSlot()
+void APIthet::comboBoxRandParamSlot()
 {
     ui->comboBoxRandParam->setEnabled(false);
     //ui->lineEditHeaderVal->setEnabled(false);
@@ -41,12 +41,12 @@ void MainWindow::comboBoxRandParamSlot()
     }
 }
 
-void MainWindow::setRandParamString()
+void APIthet::setRandParamString()
 {
     randParamType = static_cast<randPayloadTypes> (ui->comboBoxRandParam->currentIndex());
 }
 
-void MainWindow::setRandString(QString *randParamString)
+void APIthet::setRandString(QString *randParamString)
 {
     setRandParamString();
 

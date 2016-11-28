@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Set the correct HTTP Method
-void MainWindow::setMethods()
+void APIthet::setMethods()
 {
     QComboBox *comboBoxHTTPMethods = ui->comboBoxHTTPMethods;
     QStringList methodList;
@@ -31,7 +31,7 @@ void MainWindow::setMethods()
     comboBoxHTTPMethods->addItems(methodList);
 }
 
-void MainWindow::comboBoxHTTPSlot(QString selectedMethod)
+void APIthet::comboBoxHTTPSlot(QString selectedMethod)
 {
     if (selectedMethod == "PUT" || selectedMethod == "POST"
             || selectedMethod == "DELETE") {

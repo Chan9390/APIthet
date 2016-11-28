@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Set the correct Encoding
-void MainWindow::setEncoding()
+void APIthet::setEncoding()
 {
     //QComboBox *comboBoxEncode = ui->comboBoxEncode;
     QStringList encodeList;

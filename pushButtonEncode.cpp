@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Slot to enable/disable Encode button
-void MainWindow::pushButtonEncodeSlot()
+void APIthet::pushButtonEncodeSlot()
 {
     if (ui->plainTextEditPayload->toPlainText().length()) {
         ;

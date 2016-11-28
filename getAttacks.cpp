@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
-void MainWindow::performHtmlInjection(QNetworkRequest *httpRequest)
+void APIthet::performHtmlInjection(QNetworkRequest *httpRequest)
 {
     QString urlString = ui->lineEditURL->text();
     QPair<QString, QString> keyValue;
@@ -51,7 +51,7 @@ void MainWindow::performHtmlInjection(QNetworkRequest *httpRequest)
     attackType = NO_ATTACK;
 }
 
-void MainWindow::performUrlXSS(QNetworkRequest *httpRequest)
+void APIthet::performUrlXSS(QNetworkRequest *httpRequest)
 {
     QString urlString = ui->lineEditURL->text();
     QString randomString;
@@ -89,7 +89,7 @@ void MainWindow::performUrlXSS(QNetworkRequest *httpRequest)
     attackType = NO_ATTACK;
 }
 
-void MainWindow::performUrlSQLI(QNetworkRequest *httpRequest)
+void APIthet::performUrlSQLI(QNetworkRequest *httpRequest)
 {
     QString urlString = ui->lineEditURL->text();
     QPair<QString, QString> keyValue;
@@ -104,10 +104,13 @@ void MainWindow::performUrlSQLI(QNetworkRequest *httpRequest)
         //form valid and malicious keyvalue pairs
         QString queryParams = QString("%1=%2").arg(keyValue.first, keyValue.second);
         QString maliciousParams = queryParams;
+        QString *sqliPayload = genRandSqliPayload(AUTH_BYPASS);
 
-        maliciousParams.append(sqlUrlInjecionPayload);
+
+        maliciousParams.append(sqliPayload);
 
         malUrlString.replace(queryParams, maliciousParams);
+        delete(sqliPayload);
 
         //Set URL
         httpRequest->setUrl(malUrlString);
@@ -125,7 +128,7 @@ void MainWindow::performUrlSQLI(QNetworkRequest *httpRequest)
     attackType = NO_ATTACK;
 }
 
-void MainWindow::performGetCSRF(QNetworkRequest *httpRequest)
+void APIthet::performGetCSRF(QNetworkRequest *httpRequest)
 {
     QString urlString = ui->lineEditURL->text();
     QUrl targetURL = QUrl(urlString);
@@ -140,7 +143,7 @@ void MainWindow::performGetCSRF(QNetworkRequest *httpRequest)
     eventLoop.exec();
 }
 
-void MainWindow::performOpenRedirect(QNetworkRequest *httpRequest)
+void APIthet::performOpenRedirect(QNetworkRequest *httpRequest)
 {
     QUrl urlString = QUrl(ui->lineEditURL->text());
 

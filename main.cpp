@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
+#include "apithet.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     splash.show();
     QThread::sleep(7);
 
-    MainWindow w;
+    APIthet w;
     a.setWindowIcon(QIcon(APPICON));
     w.show();
     splash.finish(&w);

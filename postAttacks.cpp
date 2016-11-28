@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
-void MainWindow::performPostCSRF(QNetworkRequest *httpRequest)
+void APIthet::performPostCSRF(QNetworkRequest *httpRequest)
 {
     attackType = CSRF;
 
@@ -30,7 +30,7 @@ void MainWindow::performPostCSRF(QNetworkRequest *httpRequest)
     eventLoop.exec();
 }
 
-void MainWindow::performJsonXSS(QNetworkRequest *httpRequest)
+void APIthet::performJsonXSS(QNetworkRequest *httpRequest)
 {
     QString postPayload = ui->plainTextEditPayload->toPlainText();
     QString modPayload = postPayload.simplified();

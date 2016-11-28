@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Set the correct Encoding
-void MainWindow::getRandJsonParam()
+void APIthet::getRandJsonParam()
 {
     ui->lineEditRandParam->setEnabled(false);
     //ui->lineEditHeaderVal->setEnabled(false);

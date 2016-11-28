@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Handle Replies
-void MainWindow::replyFinished (QNetworkReply *reply)
+void APIthet::replyFinished (QNetworkReply *reply)
 {
     ui->textBrowser->clear();
     ui->textBrowser->append(reply->readAll().constData());
@@ -50,6 +50,7 @@ void MainWindow::replyFinished (QNetworkReply *reply)
             likelyUnauth = true;
 
         checkSecHeaders(reply);
+        analyzeApplicationFootprint(reply);
     }
 
     reply->deleteLater();
@@ -58,7 +59,7 @@ void MainWindow::replyFinished (QNetworkReply *reply)
     eventLoop.quit();
 }
 
-void MainWindow::processCsrfReply(QNetworkReply *reply)
+void APIthet::processCsrfReply(QNetworkReply *reply)
 {
     if(reply->error())
     {
@@ -70,7 +71,7 @@ void MainWindow::processCsrfReply(QNetworkReply *reply)
         csrfIssueLikely = true;
 }
 
-void MainWindow::processSqliReply(QNetworkReply *reply)
+void APIthet::processSqliReply(QNetworkReply *reply)
 {
     if(!reply->error())
     {
@@ -85,7 +86,7 @@ void MainWindow::processSqliReply(QNetworkReply *reply)
     }
 }
 
-void MainWindow::processXssReply(QNetworkReply *reply)
+void APIthet::processXssReply(QNetworkReply *reply)
 {
     if(reply->error())
     {
@@ -114,7 +115,7 @@ void MainWindow::processXssReply(QNetworkReply *reply)
     }
 }
 
-void MainWindow::processHtmlInjectionReply(QNetworkReply *reply)
+void APIthet::processHtmlInjectionReply(QNetworkReply *reply)
 {
     if(reply->error())
     {
@@ -133,7 +134,7 @@ void MainWindow::processHtmlInjectionReply(QNetworkReply *reply)
     }
 }
 
-void MainWindow::processOpenRedirectReply(QNetworkReply *reply)
+void APIthet::processOpenRedirectReply(QNetworkReply *reply)
 {
     if(reply->error())
     {

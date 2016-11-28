@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Set the correct HTTP Method
-void MainWindow::sendGEThttp()
+void APIthet::sendGEThttp()
 {
     QNetworkRequest httpRequest;
     QString urlString = ui->lineEditURL->text();
@@ -68,7 +68,7 @@ void MainWindow::sendGEThttp()
     performGetCSRF(&httpRequest);
 }
 
-void MainWindow::sendPOSThttp()
+void APIthet::sendPOSThttp()
 {
     QNetworkRequest httpRequest;
     //;
@@ -114,7 +114,7 @@ void MainWindow::sendPOSThttp()
         manager->post(httpRequest, ui->plainTextEditPayload->toPlainText().toUtf8());
 }
 
-void MainWindow::sendPUThttp()
+void APIthet::sendPUThttp()
 {
     QNetworkRequest httpRequest;
     QUrl targetURL = QUrl(ui->lineEditURL->text());

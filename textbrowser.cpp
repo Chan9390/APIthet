@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
-void MainWindow::textBrowserHeaderSlot()
+void APIthet::textBrowserHeaderSlot()
 {
     headerHasAuth = false;
     ui->textBrowser->clear();
@@ -47,7 +47,7 @@ void MainWindow::textBrowserHeaderSlot()
     ui->lineEditHeaderVal->clear();
 }
 
-void MainWindow::textBrowserPayloadSlot()
+void APIthet::textBrowserPayloadSlot()
 {
     ui->textBrowser->clear();
     if (ui->plainTextEditPayload->toPlainText().length()) {
@@ -57,7 +57,7 @@ void MainWindow::textBrowserPayloadSlot()
         ui->textBrowser->append("<font color=orange>empty payload, not added</font>");
 }
 
-void MainWindow::textBrowserEncodeSlot()
+void APIthet::textBrowserEncodeSlot()
 {
     ui->textBrowser->clear();
 

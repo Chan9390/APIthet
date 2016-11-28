@@ -14,14 +14,14 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 const QString charsetRandom("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 const QString numsetRandom("0123456789");
 
 //function to generate map of url parameters
-void MainWindow::genKeyValueMap(QUrl *targetURL)
+void APIthet::genKeyValueMap(QUrl *targetURL)
 {
     //QString urlString = targetURL->toString(QUrl::PrettyDecoded);
     QUrlQuery targetUrlQuery = QUrlQuery(*targetURL);
@@ -31,7 +31,7 @@ void MainWindow::genKeyValueMap(QUrl *targetURL)
 }
 
 //Generate a random string
-void MainWindow::genRandomStr(QString *randStr, int strLen)
+void APIthet::genRandomStr(QString *randStr, int strLen)
 {
     randStr->clear();
 
@@ -44,7 +44,7 @@ void MainWindow::genRandomStr(QString *randStr, int strLen)
 }
 
 //Generate a random string
-void MainWindow::genRandomNumericalStr(QString *randStr, int strLen)
+void APIthet::genRandomNumericalStr(QString *randStr, int strLen)
 {
     randStr->clear();
 
@@ -56,7 +56,7 @@ void MainWindow::genRandomNumericalStr(QString *randStr, int strLen)
     }
 }
 
-void MainWindow::genMaliciousStr(QString *maliciousStr, QString keyVal)
+void APIthet::genMaliciousStr(QString *maliciousStr, QString keyVal)
 {
     QString randStr;
 
@@ -72,30 +72,8 @@ void MainWindow::genMaliciousStr(QString *maliciousStr, QString keyVal)
     maliciousStr->append(maliciousPart2);
 }
 
-//Takes string that surely contains malicious payload
-//does a lookup for the key that was infected
-void MainWindow::analyzePayload(QString replyPayload)
-{
-    QStringList malPayload = replyPayload.split(maliciousPart1);
-    QStringList relativeID = malPayload.at(1).split(maliciousPart2);
 
-    QString lookupID = relativeID.at(0);
-    QString malParam = keyLookupTable.value(lookupID);
-
-    if (malParam.length()) {
-        ui->textBrowserResults->append
-                (QString("<font color=red> Reflected XSS detected for the param %1</font>").arg(malParam));
-        ui->textBrowserResults->append("XSS (OWASP), CWE 79, CVE-2014-3737");
-    }
-    else {
-        ui->textBrowserResults->append("<font color=red>Likely Blind XSS Scenario for unknown JSON parameter</font>");
-        ui->textBrowserResults->append("<i>A payload was injected in the past, but appeared in a recent reply</i>");
-        ui->textBrowserResults->append(malPayload.at(1));
-        ui->textBrowserResults->append("XSS (OWASP), CWE 79, CVE-2014-3737");
-    }
-}
-
-void MainWindow::genJSonMaliciousParam(QString *maliciousJsonParam, QString keyValue)
+void APIthet::genJSonMaliciousParam(QString *maliciousJsonParam, QString keyValue)
 {
     QStringList keyPair = keyValue.split(":");
     QString randomString;
@@ -107,13 +85,13 @@ void MainWindow::genJSonMaliciousParam(QString *maliciousJsonParam, QString keyV
     maliciousJsonParam->append(randomString);
 }
 
-void MainWindow::insertInvertedCommas(QString *keyVal)
+void APIthet::insertInvertedCommas(QString *keyVal)
 {
     keyVal->insert(keyVal->indexOf(':') + 1, '\"');
     keyVal->insert(keyVal->indexOf(':'), '\"');
 }
 
-void MainWindow::genRandomPhone(QString *randParamString){
+void APIthet::genRandomPhone(QString *randParamString){
     QString tempString;
 
     randParamString->clear();
@@ -123,7 +101,7 @@ void MainWindow::genRandomPhone(QString *randParamString){
     tempString.clear();
 }
 
-void MainWindow::genRandomIP(QString *randParamString){
+void APIthet::genRandomIP(QString *randParamString){
     QString tempString;
     //QChar   singleChar;
     ushort  quartet;
@@ -151,7 +129,7 @@ void MainWindow::genRandomIP(QString *randParamString){
     tempString.clear();
 }
 
-void MainWindow::genRandomWebsite(QString *randParamString){
+void APIthet::genRandomWebsite(QString *randParamString){
     QString tempString;
 
     randParamString->clear();
@@ -167,7 +145,7 @@ void MainWindow::genRandomWebsite(QString *randParamString){
     tempString.clear();
 }
 
-void MainWindow::genRandomEmail(QString *randParamString){
+void APIthet::genRandomEmail(QString *randParamString){
     QString tempString;
 
     randParamString->clear();
@@ -187,7 +165,7 @@ void MainWindow::genRandomEmail(QString *randParamString){
     tempString.clear();
 }
 
-void MainWindow::genRandNameSname(QString *randParamString){
+void APIthet::genRandNameSname(QString *randParamString){
     QString tempString;
 
     randParamString->clear();
@@ -202,7 +180,7 @@ void MainWindow::genRandNameSname(QString *randParamString){
     tempString.clear();
 }
 
-void MainWindow::genRandNames(QString *randParamString){
+void APIthet::genRandNames(QString *randParamString){
     QString tempString;
 
     randParamString->clear();
@@ -210,4 +188,26 @@ void MainWindow::genRandNames(QString *randParamString){
     genRandomStr(&tempString, RANDOM_NAME_LEN);
     randParamString->append(tempString);
     tempString.clear();
+}
+
+QString* APIthet::genRandSqliPayload(sqliTypes injType){
+    QString *sqliPayload = new QString;
+    QString tempStr;
+
+    sqliPayload->clear();
+    
+    genRandomNumericalStr(&tempStr, 5);
+
+    sqliPayload->append(tempStr);
+    tempStr.clear();
+
+    sqliPayload->append("' or ");
+
+    genRandomNumericalStr(&tempStr, 4);
+
+    sqliPayload->append(tempStr);
+    sqliPayload->append("=");
+    sqliPayload->append(tempStr);
+
+    return sqliPayload;
 }

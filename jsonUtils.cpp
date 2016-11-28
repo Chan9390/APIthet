@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
-bool MainWindow::genJSONpayload(QString replyPayload)
+bool APIthet::genJSONpayload(QString replyPayload)
 {
     QJsonDocument replyJsonDoc = QJsonDocument::fromJson(replyPayload.toUtf8());
 
@@ -41,7 +41,7 @@ bool MainWindow::genJSONpayload(QString replyPayload)
     return true;
 }
 
-void MainWindow::analyzeJsonList()
+void APIthet::analyzeJsonList()
 {
     int numNodes = jsonList.count();
     for(int iter = 0; iter < numNodes; ++iter)
@@ -61,7 +61,7 @@ void MainWindow::analyzeJsonList()
     }
 }
 
-void MainWindow::analyzeJsonList(QList<QVariant> *localList)
+void APIthet::analyzeJsonList(QList<QVariant> *localList)
 {
     int numNodes = localList->count();
     for(int iter = 0; iter < numNodes; iter++)
@@ -81,7 +81,7 @@ void MainWindow::analyzeJsonList(QList<QVariant> *localList)
     }
 }
 
-void MainWindow::analyzeJsonMap()
+void APIthet::analyzeJsonMap()
 {
     for(QMap<QString, QVariant>::iterator jsonMapEntry = jsonMap.begin();
         jsonMapEntry != jsonMap.end(); ++jsonMapEntry)
@@ -99,7 +99,7 @@ void MainWindow::analyzeJsonMap()
     }
 }
 
-void MainWindow::analyzeJsonMap(QMap<QString, QVariant> *localMap)
+void APIthet::analyzeJsonMap(QMap<QString, QVariant> *localMap)
 {
     QMap<QString, QVariant>::iterator jsonMapEntry = localMap->begin();
     for (int iter = 0; iter < localMap->count(); ++iter, jsonMapEntry++)
@@ -116,7 +116,7 @@ void MainWindow::analyzeJsonMap(QMap<QString, QVariant> *localMap)
     }
 }
 
-void MainWindow::analyzeJsonNode(QVariant *jsonNode)
+void APIthet::analyzeJsonNode(QVariant *jsonNode)
 {
     if (jsonNode->canConvert<QMap<QString, QVariant> >()) {
         QMap<QString, QVariant> localMap = jsonNode->toMap();
@@ -131,13 +131,13 @@ void MainWindow::analyzeJsonNode(QVariant *jsonNode)
     }
 }
 
-void MainWindow::populateJsonParamMap(QString key, QString value)
+void APIthet::populateJsonParamMap(QString key, QString value)
 {
     QString keyValPair = key + ":" + value;
     writeJsonParamMap(keyValPair);
 }
 
-void MainWindow::writeJsonParamMap(QString jsonStrings)
+void APIthet::writeJsonParamMap(QString jsonStrings)
 {
     int keyValueCount = 1;
     if (jsonParamsMap.contains(jsonStrings)) {

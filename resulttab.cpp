@@ -14,10 +14,47 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
-void MainWindow::checkSecHeaders(QNetworkReply *reply)
+//Takes string that surely contains malicious payload
+//does a lookup for the key that was infected
+void APIthet::analyzePayload(QString replyPayload)
+{
+    QStringList malPayload = replyPayload.split(maliciousPart1);
+    QStringList relativeID = malPayload.at(1).split(maliciousPart2);
+
+    QString lookupID = relativeID.at(0);
+    QString malParam = keyLookupTable.value(lookupID);
+
+    if (malParam.length()) {
+        ui->textBrowserResults->append
+                (QString("<font color=red> Reflected XSS detected for the param %1</font>").arg(malParam));
+        ui->textBrowserResults->append("XSS (OWASP), CWE 79, CVE-2014-3737");
+    }
+    else {
+        ui->textBrowserResults->append("<font color=red>Likely Blind XSS Scenario for unknown JSON parameter</font>");
+        ui->textBrowserResults->append("<i>A payload was injected in the past, but appeared in a recent reply</i>");
+        ui->textBrowserResults->append(malPayload.at(1));
+        ui->textBrowserResults->append("XSS (OWASP), CWE 79, CVE-2014-3737");
+    }
+}
+
+void APIthet::analyzeApplicationFootprint(QNetworkReply *reply){
+    if (reply->hasRawHeader("Server")) {
+            ui->textBrowserResults->append(
+                        "There was a server footprint");
+            ui->textBrowserResults->append(
+                    reply->rawHeader("Server"));
+                    //    arg(reply->rawHeader("Server")));
+                    //(reply->rawHeader("Server"));
+            ui->textBrowserResults->append
+                    ("-----------------------------------------------------------------------------");
+
+    }
+}
+
+void APIthet::checkSecHeaders(QNetworkReply *reply)
 {
     if (!reply->hasRawHeader(CONTENT_HEADER))
         contentHeaderMissed++;
@@ -45,7 +82,7 @@ void MainWindow::checkSecHeaders(QNetworkReply *reply)
     //showHeaderResult();
 }
 
-void MainWindow::showHeaderResult()
+void APIthet::showHeaderResult()
 {
     //ui->textBrowserResults->clear();
 

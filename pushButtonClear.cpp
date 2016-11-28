@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Slot to handle events after clear button is pressed
-void MainWindow::pushButtonClearSlot()
+void APIthet::pushButtonClearSlot()
 {
     ui->lineEditHeader->clear();
     ui->lineEditHeaderVal->clear();

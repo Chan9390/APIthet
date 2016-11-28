@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Set Http headers to the request
-void MainWindow::setHttpHeaders(QNetworkRequest *httpRequest)
+void APIthet::setHttpHeaders(QNetworkRequest *httpRequest)
 {
     while (header->getHeaderCount()) {
         httpRequest->setRawHeader(header->getLastHeader().toUtf8(),
@@ -27,7 +27,7 @@ void MainWindow::setHttpHeaders(QNetworkRequest *httpRequest)
     }
 }
 
-void MainWindow::prepareCsrfRequest(QNetworkRequest *httpRequest)
+void APIthet::prepareCsrfRequest(QNetworkRequest *httpRequest)
 {
     //Set header for arbitrary content type
     httpRequest->setRawHeader(QString("Content-Type").toUtf8(),

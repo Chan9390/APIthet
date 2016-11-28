@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
 //Slot to enable/disable Encode button
-void MainWindow::pushButtonHeaderSlot()
+void APIthet::pushButtonHeaderSlot()
 {
     ui->pushButtonAddHeader->setEnabled(false);
     ui->lineEditHeaderVal->setEnabled(false);

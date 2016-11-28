@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
-void MainWindow::processHttpReq()
+void APIthet::processHttpReq()
 {
     methods = static_cast<httpMethods> (ui->comboBoxHTTPMethods->currentIndex());
 

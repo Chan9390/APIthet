@@ -14,22 +14,23 @@
  *  limitations under the License.
  */
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "apithet.h"
+#include "ui_apithet.h"
 
-void MainWindow::enableProxySlot(int state)
+void APIthet::enableProxySlot(int state)
 {
     ui->lineEditProxyHost->setEnabled(state);
     ui->spinBoxPort->setEnabled(state);
     ui->checkBoxAuth->setEnabled(state);
+    enableAuthSlot(ui->checkBoxAuth->isChecked() && state);
 }
 
-void MainWindow::enableAuthSlot(int state){
+void APIthet::enableAuthSlot(int state){
     ui->lineEditUsername->setEnabled(state);
     ui->lineEditPassword->setEnabled(state);
 }
 
-void MainWindow::setApplicationProxy()
+void APIthet::setApplicationProxy()
 {
     bool proxyState = false;
 
