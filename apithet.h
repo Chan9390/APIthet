@@ -300,7 +300,7 @@ private:
 
     void analyzeApplicationFootprint(QNetworkReply *reply);
 
-    void processErrorMessage(QNetworkReply *reply);
+    void processErrorMessage(QString reply);
 
     void setDefault();
 

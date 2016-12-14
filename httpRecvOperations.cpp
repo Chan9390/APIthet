@@ -76,7 +76,7 @@ void APIthet::processSqliReply(QNetworkReply *reply)
     QByteArray hostResponse = reply->readAll();
     QString replyStr = QString(hostResponse);
     if (replyStr.contains("error"))
-        processErrorMessage(reply);
+        processErrorMessage(replyStr);
     else if(!reply->error())
     {
         ui->textBrowserResults->append(
@@ -158,7 +158,23 @@ void APIthet::processOpenRedirectReply(QNetworkReply *reply)
     }
 }
 
-void APIthet:: processErrorMessage(QNetworkReply *reply)
+void APIthet::processErrorMessage(QString reply)
 {
-    ui->textBrowserResults->append("<b>There was an application error</b>");
+    if (reply.contains("sql") || reply.contains("syntax") ||
+            reply.contains("table") || reply.contains("database")) {
+        ui->textBrowserResults->append
+                ("-----------------------------------------------------------------------------");
+        if (reply.contains("MySQL") || reply.contains("MSSQL") ||
+                reply.contains("Oracle") || reply.contains("MariaDB") ||
+                reply.contains("Postgre") || reply.contains("Mongo")) {
+            ui->textBrowserResults->append
+                    ("<font color=red><b>The application is very likely vulnerable to SQLI!!!</b></font>");
+        }
+        else {
+            ui->textBrowserResults->append
+                            ("<font color=red>The application is likely vulnerable to SQLI!!!</font>");
+        }
+        ui->textBrowserResults->append
+                ("SQL Injection (OWASP type - Injection), CWE 89");
+    }
 }
