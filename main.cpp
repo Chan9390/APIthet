@@ -19,16 +19,22 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication apithetApp(argc, argv);
 
+#if QT_NO_DEBUG
     QPixmap pixmap(":/icons/APIthet_banner.png");
     QSplashScreen splash(pixmap);
     splash.show();
     QThread::sleep(7);
+#endif
 
-    APIthet w;
-    a.setWindowIcon(QIcon(APPICON));
-    w.show();
-    splash.finish(&w);
-    return a.exec();
+    APIthet appWindow;
+    apithetApp.setWindowIcon(QIcon(APPICON));
+    appWindow.show();
+
+#if QT_NO_DEBUG
+    splash.finish(&appWindow);
+#endif
+
+    return apithetApp.exec();
 }

@@ -48,9 +48,9 @@
 
 #define APPICON ":/icons/APIthet_icon.png"
 
-#define CONTENT_HEADER  "Content-Security-Policy"
-#define XFRAME_HEADER   "X-Frame-Options"
-#define XCONTENT_HEADER "X-Content-Type-Options"
+#define CONTENT_SEC_POL_HEADER  "Content-Security-Policy"
+#define XFRAME_OPTIONS_HEADER   "X-Frame-Options"
+#define X_CONTENT_TYPE_OPT_HEADER "X-Content-Type-Options"
 #define HSTS_HEADER     "Strict-Transport-Security"
 #define XSS_HEADER      "X-XSS-Protection"
 #define CSRF_TOKEN_1    "X-Csrf-Token"
@@ -66,7 +66,6 @@
 #define htmlInjPayload  "<html>APIthet is testing your APIs</html>"
 #define htmlInjContent  "APIthet is testing your APIs"
 #define redirectQuery   "redirect=http://www.example.com"
-#define sqlUrlInjecionPayload  "35577585' or 9964=9964--"
 
 #define redirectDomain  "www.example.com"
 
@@ -147,11 +146,21 @@ public:
     QString getLastHeaderVal();
     void clearList();
     uint getHeaderCount();
+    void addServerFootPrint(QString strFootPrint);
+    bool footPrintPresent();
+    QString getServerFootPrint();
+
+
+    ~httpHeaders();
 
 private:
     uint numHeaders;
+    //uint numServerFootPrint;
     QLinkedList<QString> header;
     QLinkedList<QString> headerVal;
+    QLinkedList<QString> serverFootPrint;
+
+    bool footPrintPresent(QString serverFootPrint);
 };
 
 
@@ -274,6 +283,8 @@ private:
 
     void performOpenRedirect(QNetworkRequest *httpRequest);
 
+    void performUrlQuerySQLI(QNetworkRequest *httpRequest);
+
     void performUrlSQLI(QNetworkRequest *httpRequest);
 
     //process reply after attack
@@ -288,6 +299,8 @@ private:
     void processSqliReply(QNetworkReply *reply);
 
     void analyzeApplicationFootprint(QNetworkReply *reply);
+
+    void processErrorMessage(QNetworkReply *reply);
 
     void setDefault();
 
@@ -334,6 +347,7 @@ private:
     int hstsHeaderMissed;
     int xssProtHeaderMissed;
     int csrfHeaderMissed;
+    int corsLikely;
 
     QString currentParam;
 };

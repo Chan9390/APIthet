@@ -19,6 +19,7 @@
 
 httpHeaders::httpHeaders() {
     numHeaders = 0;
+    //numServerFootPrint = 0;
 }
 
 void httpHeaders::incrementHeaders() {
@@ -70,4 +71,46 @@ void httpHeaders::clearList()
 uint httpHeaders::getHeaderCount()
 {
     return numHeaders;
+}
+
+bool httpHeaders::footPrintPresent()
+{
+    if (serverFootPrint.count())
+        return true;
+    return false;
+}
+
+bool httpHeaders::footPrintPresent(QString strFootPrint)
+{
+    QLinkedList<QString>::iterator serverFootPrintIter;
+
+    for (serverFootPrintIter = serverFootPrint.begin();
+         serverFootPrintIter != serverFootPrint.end(); serverFootPrintIter++)
+    {
+        QString storedfFootPrint = *serverFootPrintIter;
+        if (storedfFootPrint.contains(strFootPrint))
+            return true;
+    }
+
+    return false;
+}
+
+void httpHeaders::addServerFootPrint(QString strFootPrint)
+{
+    //The sanity check for length of this field has
+    //to be done by calling function
+    if (false == footPrintPresent(strFootPrint)) {
+        serverFootPrint.append(strFootPrint);
+        //numServerFootPrint++;
+    }
+}
+
+QString httpHeaders::getServerFootPrint()
+{
+    if (footPrintPresent())
+    {
+        //--numServerFootPrint;
+        return serverFootPrint.takeLast();
+    }
+    return NULL;
 }

@@ -91,6 +91,22 @@ void APIthet::performUrlXSS(QNetworkRequest *httpRequest)
 
 void APIthet::performUrlSQLI(QNetworkRequest *httpRequest)
 {
+     QString urlString = ui->lineEditURL->text();
+
+     attackType = SQL_INJ;
+
+     urlString.append("'");
+     httpRequest->setUrl(urlString);
+
+     //Invoke get method
+     manager->get(*httpRequest);
+
+     eventLoop.exec();
+     attackType = NO_ATTACK;
+}
+
+void APIthet::performUrlQuerySQLI(QNetworkRequest *httpRequest)
+{
     QString urlString = ui->lineEditURL->text();
     QPair<QString, QString> keyValue;
 

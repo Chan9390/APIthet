@@ -48,7 +48,7 @@ void APIthet::sendGEThttp()
         performUrlXSS(&httpRequest);
 
         //perform sqli on url parameters
-        performUrlSQLI(&httpRequest);
+        performUrlQuerySQLI(&httpRequest);
 
         //perform open redirect attack
         performOpenRedirect(&httpRequest);
@@ -58,6 +58,8 @@ void APIthet::sendGEThttp()
     }
 
     else {
+        //perform in-band url based sql injection
+        performUrlSQLI(&httpRequest);
         //Set URL
         httpRequest.setUrl(targetURL);
         //Invoke get method

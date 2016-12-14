@@ -21,7 +21,7 @@
 void APIthet::replyFinished (QNetworkReply *reply)
 {
     ui->textBrowser->clear();
-    ui->textBrowser->append(reply->readAll().constData());
+    //ui->textBrowser->append(reply->readAll().constData());
 
     switch(attackType) {
     case XSS:
@@ -73,7 +73,11 @@ void APIthet::processCsrfReply(QNetworkReply *reply)
 
 void APIthet::processSqliReply(QNetworkReply *reply)
 {
-    if(!reply->error())
+    QByteArray hostResponse = reply->readAll();
+    QString replyStr = QString(hostResponse);
+    if (replyStr.contains("error"))
+        processErrorMessage(reply);
+    else if(!reply->error())
     {
         ui->textBrowserResults->append(
                 QString("<font color=red>Blind SQLI likely for JSON param -- %1</font>").arg(currentParam));
@@ -152,4 +156,9 @@ void APIthet::processOpenRedirectReply(QNetworkReply *reply)
                     ("<font color=red>Open Redirect vulnerability found</font>");
         }
     }
+}
+
+void APIthet:: processErrorMessage(QNetworkReply *reply)
+{
+    ui->textBrowserResults->append("<b>There was an application error</b>");
 }

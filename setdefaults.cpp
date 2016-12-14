@@ -35,4 +35,5 @@ void APIthet::setDefault()
     hstsHeaderMissed = 0;
     xssProtHeaderMissed = 0;
     csrfHeaderMissed = 0;
+    corsLikely = 0;
 }
