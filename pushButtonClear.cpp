@@ -33,5 +33,7 @@ void APIthet::pushButtonClearSlot()
     ui->comboBoxRandParam->setCurrentIndex(0);
     //ui->comboBoxRandParam->setEnabled(false);
 
+    ui->textBrowserResults->clear();
+
     setDefault();
 }

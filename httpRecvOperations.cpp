@@ -21,8 +21,8 @@
 void APIthet::replyFinished (QNetworkReply *reply)
 {
     ui->textBrowser->clear();
-    //ui->textBrowser->append(reply->readAll().constData());
 
+    //ui->textBrowser->append(reply->readAll().constData());
     switch(attackType) {
     case XSS:
         processXssReply(reply);
@@ -50,8 +50,9 @@ void APIthet::replyFinished (QNetworkReply *reply)
             likelyUnauth = true;
 
         checkSecHeaders(reply);
-        analyzeApplicationFootprint(reply);
     }
+
+    analyzeApplicationFootprint(reply);
 
     reply->deleteLater();
 
@@ -61,7 +62,9 @@ void APIthet::replyFinished (QNetworkReply *reply)
 
 void APIthet::processCsrfReply(QNetworkReply *reply)
 {
-    if(reply->error())
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    if (statusCode < 200 || statusCode > 208)
     {
         ui->textBrowser->append("An error occured while performing the operation...");
         ui->textBrowser->append(reply->errorString());
@@ -75,9 +78,12 @@ void APIthet::processSqliReply(QNetworkReply *reply)
 {
     QByteArray hostResponse = reply->readAll();
     QString replyStr = QString(hostResponse);
+
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
     if (replyStr.contains("error"))
         processErrorMessage(replyStr);
-    else if(!reply->error())
+    else if (statusCode >= 200 && statusCode <= 208)
     {
         ui->textBrowserResults->append(
                 QString("<font color=red>Blind SQLI likely for JSON param -- %1</font>").arg(currentParam));
@@ -92,7 +98,9 @@ void APIthet::processSqliReply(QNetworkReply *reply)
 
 void APIthet::processXssReply(QNetworkReply *reply)
 {
-    if(reply->error())
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    if (statusCode < 200 || statusCode > 208)
     {
         ui->textBrowser->append("An error occured while performing the operation...");
         ui->textBrowser->append(reply->errorString());
@@ -121,7 +129,9 @@ void APIthet::processXssReply(QNetworkReply *reply)
 
 void APIthet::processHtmlInjectionReply(QNetworkReply *reply)
 {
-    if(reply->error())
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    if (statusCode < 200 || statusCode > 208)
     {
         ui->textBrowser->append("An error occured while performing the operation...");
         ui->textBrowser->append(reply->errorString());
@@ -134,13 +144,16 @@ void APIthet::processHtmlInjectionReply(QNetworkReply *reply)
         if (replyStr.contains(htmlInjContent)) {
             ui->textBrowserResults->append
                     (QString("<font color=red>HTML injection found for param %1 </font>").arg(currentParam));
+            ui->textBrowserResults->append("<i>HTML Injection (OWASP type - Injection)</i>");
         }
     }
 }
 
 void APIthet::processOpenRedirectReply(QNetworkReply *reply)
 {
-    if(reply->error())
+    int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    if (statusCode < 200 || statusCode > 308)
     {
         ui->textBrowser->append("An error occured while performing the operation...");
         ui->textBrowser->append(reply->errorString());
